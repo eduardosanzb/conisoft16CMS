@@ -1,0 +1,84 @@
+<ion-view view-title="Upload">
+  <ion-content class="padding">
+     <div class="list">
+
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Type to upload
+      </div>
+      <select ng-model="type" ng-change="typeSelected(type)">
+        <option selected>Conference</option>
+        <option >Speaker</option>
+      </select>
+    </label>
+
+    <!-- Conference Stuff -->
+    <div ng-if="type == 'Conference'" ng-class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="Event Name" ng-model="event.name">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Location" ng-model="event.location">
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Kind of Event
+        </div>
+        <select ng-model="event.kind" >
+          <option selected>Main Keynote</option>
+          <option >Keynote</option>
+          <option >2nd Keynote</option>
+          <option >Workshop</option>
+          <option >Paper</option>
+        </select>
+      </label>
+  
+      <label class="item item-input">
+        <input type="text" placeholder="Moderator" ng-model="event.moderator">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Topic" ng-model="event.topic">
+      </label>
+
+      <a class="item" ng-click="openSpeakersModal()">Speakers</a>
+      <a class="item" ng-click="openDatePicker()">Date {{showDate}}</a>
+
+      <ionic-timepicker input-obj="startingTime">
+        <button class="button button-block button-positive overflowShow">
+          <standard-time-meridian etime='startingTime.inputEpochTime'>Starting Time</standard-time-meridian>
+        </button>
+      </ionic-timepicker>
+
+      <ionic-timepicker input-obj="finishTime">
+        <button class="button button-block button-positive overflowShow">
+          <standard-time-meridian etime='finishTime.inputEpochTime'>Finish Time</standard-time-meridian>
+        </button>
+      </ionic-timepicker>
+
+      <button class="button button-full button-assertive" ng-click="createConference()"> Create the Event </button>
+    
+    </div>
+
+
+    <!-- Speaker Stuff -->
+    <div ng-if="type == 'Speaker'">
+
+      <label class="item item-input">
+        <input type="text" placeholder="Speaker Name" ng-model="speaker.name">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Description in English" ng-model="speaker.descriptionEN">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Description in Spanish" ng-model="speaker.descriptionES">
+      </label>
+
+      
+
+      <button class="button button-full button-assertive" ng-click="createSpeaker()"> Create the Speaker </button>
+
+    </div>
+  </div>
+  </ion-content>
+</ion-view>
