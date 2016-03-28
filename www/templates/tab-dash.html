@@ -46,13 +46,13 @@
 
       <ionic-timepicker input-obj="startingTime">
         <button class="button button-block button-positive overflowShow">
-          <standard-time-meridian etime='startingTime.inputEpochTime'>Starting Time</standard-time-meridian>
+          <standard-time-meridian etime='startingTime.inputEpochTime'>Starting Time{{event.startTime | date:'medium'}}</standard-time-meridian>
         </button>
       </ionic-timepicker>
 
       <ionic-timepicker input-obj="finishTime">
         <button class="button button-block button-positive overflowShow">
-          <standard-time-meridian etime='finishTime.inputEpochTime'>Finish Time</standard-time-meridian>
+          <standard-time-meridian etime='finishTime.inputEpochTime'>Finish Time {{event.finishTime | date:'medium'}}</standard-time-meridian>
         </button>
       </ionic-timepicker>
 
