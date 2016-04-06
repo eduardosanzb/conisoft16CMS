@@ -188,9 +188,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ScanCtrl', function($scope,$http) {
-
-
 var url = "http://upaep.mx/micrositios/preregistro/validate2.php?ref=05840000094436ID9&&cadena=e41723625f5ae2514d064f684d79836fd1c1835896a2d143ac30c1ac98b256c9564cee7ee855d4ba5bbf11bd17571795f93682930762f074af356236cdcd01ed638bc6c93a2082ad58f1478b97b97b2a59bc458aa5732dd9e53fe58e507de10f0d2a07c5ada3ae619a7e3393c7ef96a9"
+var url2 = "http://upaep.mx/micrositios/preregistro/validate2.php?ref=05700003343889ID1&&cadena=00bfbad873a34daa1f46cc1af772873e534af2ea38e28b2a10044dea3bba1724419457abd26ebfd7ff5f47ebcba14b87"
 
 $http.post(url).then(function(result){
   $scope.data = result;
@@ -200,23 +199,8 @@ $http.post(url).then(function(result){
 });
 
 
-// var req = {
-//  method: 'POST',
-//  url: 'http://upaep.mx/micrositios/preregistro/validate2.php',
-//  headers: {
-//    'Content-Type': undefined
-//  },
-//  data: { ref: '05840000094436ID9',
-//  cadena:'e41723625f5ae2514d064f684d79836fd1c1835896a2d143ac30c1ac98b256c9564cee7ee855d4ba5bbf11bd17571795f93682930762f074af356236cdcd01ed638bc6c93a2082ad58f1478b97b97b2a59bc458aa5732dd9e53fe58e507de10f0d2a07c5ada3ae619a7e3393c7ef96a9' }
-// }
-
-// $http(req).then(function(result){
-//     console.log(result)
-// }, function(error){
-//     console.log(error)
-// });
-
-$http.get(url).then(function(result){
+$http.get(url2).then(function(result){
+    $scope.data = result;
   console.log(result);
 }, function(error){
   console.log(error);
