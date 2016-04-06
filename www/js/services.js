@@ -147,7 +147,21 @@ function Users(FirebaseUrl, $firebaseArray, $firebaseObject, $rootScope) {
 }
 Users.$inject = ['FirebaseUrl', '$firebaseArray', '$firebaseObject', '$rootScope'];
 
-function Reviews(FirebaseUrl, $firebaseArray, $firebaseObject, $rootScope) {}
+function Reviews(FirebaseUrl, $firebaseArray, $firebaseObject, $rootScope) {
+
+    var ref = new Firebase(FirebaseUrl + "/reviews");
+    return {
+        ref: function(){
+            return ref;
+        },
+        all: function(){
+            return $firebaseArray(ref)
+        },
+        get: function(idEvent){
+            return $firebaseObject(ref.child(idEvent))
+        }
+    }
+}
 Reviews.$inject = ['FirebaseUrl', '$firebaseArray', '$firebaseObject', '$rootScope'];
 
 function Countries(FirebaseUrl, $firebaseArray, $firebaseObject, $rootScope) {

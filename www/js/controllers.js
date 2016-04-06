@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('UploadCtrl', function($scope, $ionicModal, ionicDatePicker, Speakers, Conferences, FirebaseUrl, $ionicPopup) {
+.controller('UploadCtrl', function($scope, $ionicModal, ionicDatePicker, Speakers, Conferences, FirebaseUrl, $ionicPopup, Reviews) {
     $scope.type = "Speaker"
     $scope.speakers = Speakers.all();
 
@@ -34,10 +34,35 @@ angular.module('starter.controllers', [])
     $scope.createConference = function() {
         console.log($scope.event);
         //set the object in firebase
-        var newConference = Conferences.cleanRef().push(null);
+        var newConference = Conferences.cleanRef().push();
         var conferenceId = newConference.key();
-        Conferences.cleanRef().child('en').child(conferenceId).set($scope.event);
-        Conferences.cleanRef().child('es').child(conferenceId).set($scope.event, onComplete);
+
+        var conferenceEn = {
+          date: $scope.event.date,
+          description:$scope.event.descriptionEN,
+          finishTime:$scope.event.finishTime,
+          location:$scope.event.location,
+          moderator:$scope.event.moderator,
+          name:$scope.event.name,
+          speakers:$scope.event.speakers,
+          startTime:$scope.event.startTime,
+          topic:$scope.event.topic
+        }
+
+        var conferenceEs = {
+          date: $scope.event.date,
+          description:$scope.event.descriptionES,
+          finishTime:$scope.event.finishTime,
+          location:$scope.event.location,
+          moderator:$scope.event.moderator,
+          name:$scope.event.name,
+          speakers:$scope.event.speakers,
+          startTime:$scope.event.startTime,
+          topic:$scope.event.topic
+        }
+        Conferences.cleanRef().child('en').child(conferenceId).set(conferenceEn);
+        Conferences.cleanRef().child('es').child(conferenceId).set(conferenceEs, onComplete);
+        Reviews.ref().child(conferenceId).set({});
 
         var ref = new Firebase(FirebaseUrl + "speakers/");
 
@@ -163,25 +188,26 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ScanCtrl', function($scope,$http) {
+var url = "http://upaep.mx/micrositios/preregistro/validate2.php?ref=05840000094436ID9&&cadena=e41723625f5ae2514d064f684d79836fd1c1835896a2d143ac30c1ac98b256c9564cee7ee855d4ba5bbf11bd17571795f93682930762f074af356236cdcd01ed638bc6c93a2082ad58f1478b97b97b2a59bc458aa5732dd9e53fe58e507de10f0d2a07c5ada3ae619a7e3393c7ef96a9"
+var url2 = "http://upaep.mx/micrositios/preregistro/validate2.php?ref=05700003343889ID1&&cadena=00bfbad873a34daa1f46cc1af772873e534af2ea38e28b2a10044dea3bba1724419457abd26ebfd7ff5f47ebcba14b87"
+
+$http.post(url).then(function(result){
+  $scope.data = result;
+  console.log(result);
+}, function(error){
+  console.log(error);
+});
+
+
+$http.get(url2).then(function(result){
+    $scope.data = result;
+  console.log(result);
+}, function(error){
+  console.log(error);
+});
 
 
 
-    var req = {
-        method: 'POST',
-        url: "http://upaep.mx/micrositios/preregistro/validate.php",
-        headers: {
-            'Content-Type': undefined
-        },
-        data: { ref: '05840000094436ID9',
-                cadena: "e41723625f5ae2514d064f684d79836fd1c1835896a2d143ac30c1ac98b256c9564cee7ee855d4ba5bbf11bd17571795f93682930762f074af356236cdcd01ed638bc6c93a2082ad58f1478b97b97b2a59bc458aa5732dd9e53fe58e507de10f0d2a07c5ada3ae619a7e3393c7ef96a9" 
-        }
-    }
-
-    $http(req).then(function(result) {
-      console.log(result)
-    }, function() {
-
-    });
 })
 
 .controller('AccountCtrl', function($scope, Conferences) {
