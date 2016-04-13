@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('UploadCtrl', function($scope, $ionicModal, ionicDatePicker, Speakers, Conferences, FirebaseUrl, $ionicPopup, Reviews) {
+.controller('UploadCtrl', function($scope, $ionicModal, ionicDatePicker, Speakers, Conferences, FirebaseUrl, $ionicPopup, Reviews, $ionicActionSheet, $cordovaCamera) {
     $scope.type = "Speaker"
     $scope.speakers = Speakers.all();
 
@@ -30,6 +30,32 @@ angular.module('starter.controllers', [])
             });
         }
     };
+
+    /*IMAGE HANDLING*/
+    console.log($cordovaCamera)
+    
+    
+    
+    
+
+    $scope.addImage = function() {
+        // var options = {
+        //                 quality: 90,
+        //                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        //                 popoverOptions: CameraPopoverOptions,
+        //                 destinationType: Camera.DestinationType.DATA_URL,
+        //                 encodingType: Camera.EncodingType.JPEG,
+        //                 saveToPhotoAlbum: false
+        //             };
+
+        // $cordovaCamera.getPicture({}).then(function(imageData) {
+        //         $scope.speaker.profile_pic = imageData;
+        //     }, function(error) {
+        //         console.error(error);
+        //     });
+
+    }
+    /*IMAGE HANDLING END*/
 
     $scope.createConference = function() {
         console.log($scope.event);
@@ -74,17 +100,16 @@ angular.module('starter.controllers', [])
 
 
     $scope.createSpeaker = function() {
+        //console.log($scope.speaker.picture.base64);
         var speakerEn = {
             name: $scope.speaker.name,
-            description: $scope.speaker.descriptionEN
-            //,
-            //picture:$scope.uploader
+            description: $scope.speaker.descriptionEN,
+            picture:$scope.speaker.picture.base64
         }
         var speakerEs = {
             name: $scope.speaker.name,
-            description: $scope.speaker.descriptionES
-            //,
-            //picture:$scope.uploader
+            description: $scope.speaker.descriptionES,
+            picture:$scope.speaker.picture.base64
         }
 
         var ref = new Firebase(FirebaseUrl + "speakers/");
@@ -94,7 +119,7 @@ angular.module('starter.controllers', [])
         console.log(speakerEs);
         ref.child('en').child(speakerId).set(speakerEn);
         ref.child('es').child(speakerId).set(speakerEs, onComplete);
-        //$scope.speaker = {};
+        $scope.speaker = {};
     }
 
 
