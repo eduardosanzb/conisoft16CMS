@@ -38,23 +38,7 @@ angular.module('starter.controllers', [])
     
     
 
-    $scope.addImage = function() {
-        // var options = {
-        //                 quality: 90,
-        //                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-        //                 popoverOptions: CameraPopoverOptions,
-        //                 destinationType: Camera.DestinationType.DATA_URL,
-        //                 encodingType: Camera.EncodingType.JPEG,
-        //                 saveToPhotoAlbum: false
-        //             };
-
-        // $cordovaCamera.getPicture({}).then(function(imageData) {
-        //         $scope.speaker.profile_pic = imageData;
-        //     }, function(error) {
-        //         console.error(error);
-        //     });
-
-    }
+    
     /*IMAGE HANDLING END*/
 
     $scope.createConference = function() {
@@ -100,7 +84,7 @@ angular.module('starter.controllers', [])
 
 
     $scope.createSpeaker = function() {
-        //console.log($scope.speaker.picture.base64);
+        console.log($scope.speaker.picture);
         var speakerEn = {
             name: $scope.speaker.name,
             description: $scope.speaker.descriptionEN,
@@ -205,22 +189,104 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ScanCtrl', function($scope,$http, $cordovaBarcodeScanner) {
+.controller('ScanCtrl', function($scope,$http, $cordovaBarcodeScanner, Users, $ionicModal, $ionicLoading, $ionicPopup, References) {
 
 
-$cordovaBarcodeScanner.scan().then(function.imageData);
+//$cordovaBarcodeScanner.scan().then(function.imageData);
 $scope.scanBarcode = function() {
+    $ionicLoading.show();
         $cordovaBarcodeScanner.scan().then(function(imageData) {
-            alert(imageData.text); //the id number
+            //alert(imageData.text); //the id number
             console.log("Barcode Format -> " + imageData.format);
             console.log("Cancelled -> " + imageData.cancelled);
+            if (!imageData.cancelled) {
+                Users.get(imageData.text).$loaded().then(function(user){
+                    //alert(user.name)
+                    $scope.user = user;
+                    $ionicLoading.hide();
+                    $scope.modal.show()
+                }).catch(function(error){
+                    $ionicLoading.hide()
+                    console.log(error)
+                     $ionicPopup.confirm({
+                            title: 'Sorry',
+                            content: 'This user does not exist'
+                        }).then(function(res) {
+                            if(res)
+                                $scope.number = {}
+                        });
+                });
+            }
+            
         }, function(error) {
             console.log("An error happened -> " + error);
         });
     };
+    $scope.number = {}
+$scope.searchByReference = function(reference){
+    $ionicLoading.show();
+    console.log(reference)
+    References.get(reference).$loaded().then(function(data){
+        Users.get(data.user).$loaded().then(function(user){
+                    $scope.user = user;
+                    $ionicLoading.hide();
+                    $scope.modal.show()
+        }).catch(function(error){
+            alert(error)
+            console.log(error)
+        })
+    }).catch(function(error){
+         $ionicLoading.hide()
+        console.log(error)
+         $ionicPopup.confirm({
+                title: 'Sorry',
+                content: 'This reference does not exist'
+            }).then(function(res) {
+                if(res)
+                    $scope.number = {}
+            });
+    })
+    
+}
 
+function cameraCallback(img){
+    $ionicLoading.show();
+    $scope.user.profilePicture = img;
+    $scope.user.$save().then(function(){
+        $ionicLoading.hide()
+         $ionicPopup.confirm({
+                title: 'Success',
+                content: 'User saved correctly'
+            }).then(function(res) {
+                if(res)
+                    $scope.modal.hide();
+            });
+    });
+}
 
+function errorCallback(error){
+    alert("Upss something went wrong");
+    console.log(error);
+}
+ 
+var cameraOptions = {
+    quality: 50,
+    destinationType: 0,
+    encodingType: 0,
+    saveToPhotoAlbum: false
+}
+$scope.saveUser = function(){
+    navigator.camera.getPicture(cameraCallback, errorCallback, cameraOptions);
+}
 
+/*MODALS STUFF*/
+
+$ionicModal.fromTemplateUrl('templates/register-user.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+}).then(function(modal){
+    $scope.modal = modal;
+});
 
 })
 

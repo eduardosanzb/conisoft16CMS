@@ -82,7 +82,8 @@
       </label>
 
       <form>
-        <input type='file' ng-model='speaker.picture' base-sixty-four-input>
+        <input type='file' ng-model='speaker.picture' maxsize="500" accept="image/*" base-sixty-four-input>
+        <span ng-show="form.files.$error.maxsize">Files must not exceed 5000 KB</span>
       </form>
 
       

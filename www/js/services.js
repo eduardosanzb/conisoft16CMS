@@ -82,13 +82,7 @@ Conferences.$inject = ['FirebaseUrl', '$firebaseArray', '$firebaseObject', '$roo
 
 
 function References(FirebaseUrl, $firebaseArray, $firebaseObject, $rootScope) {
-    var locale = 'en';
-    if (navigator.language) {
-        if (navigator.language.split('-')[0] == "es" || navigator.language.split('-')[0] == "en") {
-            locale = navigator.language.split('-')[0];
-        }
-    }
-    var ref = new Firebase(FirebaseUrl + "references/" + locale);
+    var ref = new Firebase(FirebaseUrl + "references/");
     return {
         ref: function() {
             return ref;
@@ -97,7 +91,7 @@ function References(FirebaseUrl, $firebaseArray, $firebaseObject, $rootScope) {
             return $firebaseObject(ref.child(referenceId));
         },
         all: function() {
-            return $firebaseArray(ref.orderByChild("Name"));
+            return $firebaseArray(ref);
         },
         allObject: function() {
             return $firebaseObject(ref);
