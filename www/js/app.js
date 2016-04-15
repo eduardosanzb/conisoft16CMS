@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','firebase','ionic-datepicker','ionic-timepicker', 'naif.base64', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.filters', 'starter.services','firebase','ionic-datepicker','ionic-timepicker', 'naif.base64', 'ngCordova'])
 .constant('FirebaseUrl', "https://conisoft16.firebaseio.com/")
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

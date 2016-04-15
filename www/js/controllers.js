@@ -278,6 +278,11 @@ var cameraOptions = {
 $scope.saveUser = function(){
     navigator.camera.getPicture(cameraCallback, errorCallback, cameraOptions);
 }
+$scope.values = {
+    1:1,
+    2:2,
+    3:3
+}
 
 /*MODALS STUFF*/
 

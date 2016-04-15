@@ -12,7 +12,10 @@
       <div class="item item-divider">Payment Info</div>
       <div class="item">Reference Number: {{user.payment.referenceNumber}}</div>
       <div class="item">Scholarship: {{user.scholarship}}</div>
-      <div class="item">Payment Status: {{user.payment.paymentStatus}}</div>
+      <div class="item">Payment Status:s {{user.payment.paymentStatus | paymentStatus}}</div>
+      <select ng-model="user.payment.paymentStatus" >
+        <option ng-repeat="value in values" ng-value="value">{{value | paymentStatus}}</option>
+      </select>
       <img class="profile-pic" data-ng-src="data:image/png;base64,{{user.profilePicture}}" ng-show="user.profilePicture" >
       <ion-toggle  ng-model="user.payment.kitDelivered">
         Kit delivered: {{user.payment.kitDelivered}}
